@@ -80,17 +80,6 @@ class Library {
         }
     }
 
-    // findBookBy(type, value) {
-    //     this.books.forEach(function (item) {
-    //         for (let key in item) {
-    //             if (key === type && this.item[key] === value) {
-    //                 return this.item;
-    //             }
-    //         }
-    //     });
-    //     return null;
-    // } //не работает. Почему?
-
     findBookBy(type, value) {
         for (let i = 0; i < this.books.length; i++) {
             for (let key in this.books[i]) {
@@ -105,10 +94,10 @@ class Library {
     giveBookByName(bookName) {
         for (let i = 0; i < this.books.length; i++) {
             if (this.books[i].name === bookName) {
+                let res = this.books[i];
                 let deleteBook = this.books.indexOf(this.books[i]);
                 this.books.splice(deleteBook, 1);
-                return;
-                // return this.books[i];
+                return res;
             }
         }
         return null;
