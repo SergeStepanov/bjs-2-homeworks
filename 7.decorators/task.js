@@ -46,21 +46,15 @@ function debounceDecoratorNew(func, ms, flag = false) {
     };
 }
 
-function debounceDecorator2(func, ms, flag = false) {
+function debounceDecorator2(func) {
     // Ваш код
-    let savedArgs;
-    let savedThis;
-    return function (...args) {
-        savedArgs = args;
-        savedThis = this;
-        if (flag) {
-            return;
-        }
-        func.apply(this, savedArgs);
-        flag = true;
-        setTimeout(() => {
-            flag = false;
-            func.apply(savedThis, savedArgs);
-        }, ms);
-    };
+
+    function wrapper(...args) {
+        wrapper.count.push(args);
+
+        return func.apply(this, args);
+    }
+    wrapper.count = [];
+
+    return wrapper;
 }
