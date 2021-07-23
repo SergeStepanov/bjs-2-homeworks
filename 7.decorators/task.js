@@ -10,8 +10,8 @@ function cachingDecoratorNew(func) {
         let idx = cache.findIndex((item) => item.hash === hash);
 
         if (idx !== -1) {
-            console.log('Из кэша: ' + cache[idx]['result']); // ????????????? Здесь не уверен ?????????????
-            return 'Из кэша: ' + cache[idx]['result'];
+            console.log('Из кэша: ' + cache[idx].result);
+            return 'Из кэша: ' + cache[idx].result;
         } else {
             let result = func.call(this, ...args);
             cache.push({ hash, result });
@@ -46,15 +46,32 @@ function debounceDecoratorNew(func, ms, flag = false) {
     };
 }
 
-function debounceDecorator2(func) {
+function debounceDecorator2(func, ms) {
     // Ваш код
+    let timeout;
+    let count = 0;
+    let flag = false;
+    let savedArgs;
+    let savedThis;
 
-    function wrapper(...args) {
-        wrapper.count.push(args);
+    return function (...args) {
+        count++;
 
-        return func.apply(this, args);
-    }
-    wrapper.count = [];
+        savedArgs = args;
+        savedThis = this;
+        if (flag) {
+            return;
+        }
 
-    return wrapper;
+        clearTimeout(timeout);
+
+        func.apply(this, savedArgs);
+        flag = true;
+        timeout = setTimeout(() => {
+            flag = false;
+            func.apply(savedThis, savedArgs);
+
+            console.log(`Функция вызвана кол-во раз: ${count}`);
+        }, ms);
+    };
 }
