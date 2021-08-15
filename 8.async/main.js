@@ -1,24 +1,37 @@
 // тут вы можете вызывать функции из task.js
 
-const alarmTest = new AlarmClock();
+function testCase() {
+    const alarmTest = new AlarmClock();
 
-alarmTest.addClock('09:00', () => console.log('Подъём!!!!!!'), 1);
-alarmTest.addClock('09:02', () => console.log('Вставай!!!!!!'), 1);
-alarmTest.addClock('09:02', () => console.log('Вставай давай!!!!!!'), 2);
-alarmTest.addClock('09:03', () => console.log('Проспал!!!!!!'), 3);
+    alarmTest.addClock('09:34', () => console.log('Подъём!!!!!!'), 1);
 
-alarmTest.printAlarms();
+    alarmTest.addClock(
+        '09:35',
+        () => {
+            console.log('Вставай давай!!!!!!');
+            alarmTest.removeClock(2);
+        },
+        2
+    );
 
-console.log(alarmTest);
+    // alarmTest.addClock('20:00', () => console.log('error'));
 
-console.log(`=======---======`);
+    alarmTest.addClock(
+        '09:36',
+        () => {
+            console.log('Проспал!!!!!!');
+            alarmTest.clearAlarms(), alarmTest.printAlarms();
+        },
+        3
+    );
 
-alarmTest.removeClock(2);
+    alarmTest.addClock('09:02', () => console.log('Вставай!!!!!!'), 1);
 
-console.log(alarmTest);
+    alarmTest.printAlarms();
 
-console.log(`=======---======`);
+    alarmTest.start();
 
-alarmTest.clearAlarms();
+    return;
+}
 
-console.log(alarmTest);
+testCase();

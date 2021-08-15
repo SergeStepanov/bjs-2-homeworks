@@ -3,7 +3,7 @@
 class AlarmClock {
     constructor() {
         this.alarmCollection = [];
-        this.timerId;
+        this.timerId = 0;
     }
 
     addClock(time, callback, id) {
@@ -23,12 +23,12 @@ class AlarmClock {
         return this.alarmCollection.filter((item) => {
             if (item.id === id) {
                 this.alarmCollection.splice(
-                    this.alarmCollection.indexOf(item.id),
+                    this.alarmCollection.indexOf(item),
                     1
                 );
             }
         });
-    } //????????????????????????
+    } //ok
 
     getCurrentFormattedTime() {
         const nowDate = new Date();
@@ -44,9 +44,27 @@ class AlarmClock {
         return `${nowHours}:${nowMinutes}`;
     } // ok!!!
 
-    // start() {}
+    start() {
+        // debugger;
 
-    // stop() {}
+        const xClock = checkClock.bind(this);
+
+        function checkClock(clock) {
+            if (clock.time === this.getCurrentFormattedTime()) clock.callback();
+        }
+
+        if (this.timerId === 0)
+            this.timerId = setInterval(() => {
+                this.alarmCollection.forEach((item) => xClock(item));
+            }, 1000);
+    } //?????????????
+
+    stop() {
+        if (this.timerId !== 0) {
+            clearInterval(this.timerId);
+            this.timerId = 0;
+        }
+    } //?????????
 
     printAlarms() {
         console.log(
@@ -59,7 +77,7 @@ class AlarmClock {
     } // ok!!!!
 
     clearAlarms() {
-        clearInterval(); //???
+        clearInterval(this.timerId); //???
 
         this.alarmCollection.splice(0);
     }
